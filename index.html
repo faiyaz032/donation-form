@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Damion&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Stripe Elements</title>
+
+    <!-- CSS START -->
+    <style>
+      /* UTILITY CSS CLASS */
+      .mt-10 {
+        margin-top: 10px;
+      }
+      .mb-8 {
+        margin-bottom: 8px;
+      }
+      .mb-30 {
+        margin-bottom: 30px;
+      }
+      .mt-20 {
+        margin-top: 20px;
+      }
+      .w-full {
+        width: 100%;
+      }
+      .flex {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .relative {
+        position: relative;
+      }
+      .label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #474747;
+        display: block;
+        font-family: 'Inter', sans-serif;
+      }
+      .input {
+        height: 42px;
+        border: 1px solid #d5d5d5;
+        border-radius: 8px;
+        padding-left: 12px;
+        padding-right: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #474747;
+        display: relative;
+        font-family: 'Inter', sans-serif;
+        background-color: transparent;
+      }
+      input::placeholder {
+        color: #969696;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+      }
+
+      .input_container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .brand_button {
+        background-color: #056bbf;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+      }
+
+      .brand_button:disabled {
+        cursor: auto;
+        background-color: #056bbf86;
+      }
+      .brand_button:disabled:hover {
+        background-color: #056bbf86;
+      }
+      .brand_button:hover {
+        opacity: 0.9;
+      }
+      .brand_button.outline_button {
+        background-color: transparent;
+        color: #056bbf;
+        border: 2px solid #056bbf;
+        font-weight: bold;
+      }
+      .brand_button.outline_button:hover {
+        background-color: #056bbf;
+        color: #ffffff;
+        opacity: 0.9;
+        outline-color: hsla(207, 95%, 38%, 0.404);
+      }
+
+      .form_container {
+        box-shadow: 0px 2px 4px 0px #00000014;
+        background-color: #fff;
+        width: 100%;
+        max-width: 420px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 40px 20px 20px 20px;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+      }
+
+      /*=================== Step Indicator Colors ========================== */
+      .step-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 8px;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
+      .step-button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: background-color 0.2s, color 0.2s;
+        border: 2px solid transparent;
+      }
+
+      .step-button-active {
+        background-color: #056bbf;
+        color: #ffffff;
+        border-color: #056bbf;
+      }
+
+      .step-button-inactive {
+        background-color: transparent;
+        color: #6b7280;
+        border-color: rgba(91, 112, 131, 0.2);
+      }
+
+      .step-connector {
+        height: 4px;
+        width: 100%;
+        margin: 0 4px;
+        border-radius: 10px;
+      }
+
+      .step-connector-active {
+        background-color: #056bbf;
+      }
+
+      .step-connector-inactive {
+        background-color: rgba(91, 112, 131, 0.2); /* Lighter version of primary color */
+      }
+
+      /* =======Starting STEP 1 FORM CSS ======= */
+      .step_title > h4 {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 35px;
+        margin-top: 30px;
+        color: #474747;
+      }
+
+      /* TOGGLE BUTTON CSS */
+      .toggle_container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .toggle_button {
+        display: inline-flex;
+        width: 100%;
+        position: relative;
+        padding: 0.5rem;
+        background-color: #f8f8f8;
+        border-radius: 14px;
+        box-shadow: inset 0px 2px 4px 0px #00000014;
+        height: 40px;
+      }
+
+      .toggle_background {
+        position: absolute;
+        top: 6px;
+        bottom: 6px;
+        left: 6px;
+        width: calc(50% - 6px);
+        background-color: #056bbf;
+        border-radius: 11px;
+        transition: all 0.3s ease;
+      }
+
+      .toggle_button input {
+        display: none;
+      }
+
+      .toggle_button label {
+        flex: 1;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: #969696;
+        padding: 12px 0;
+        /* transition: color 0.3s ease-in-out; */
+      }
+
+      .toggle_button input#toggle1:checked ~ .toggle_background {
+        transform: translateX(0);
+      }
+
+      .toggle_button input#toggle2:checked ~ .toggle_background {
+        transform: translateX(100%);
+      }
+
+      .toggle_button input#toggle1:checked + label[for='toggle1'],
+      .toggle_button input#toggle2:checked + label[for='toggle2'] {
+        color: #ffffff;
+        z-index: 9999;
+      }
+
+      .toggle_button img {
+        margin-left: 6px;
+        height: 20px;
+        width: 20px;
+      }
+
+      /* Amounts Button  */
+
+      .amount_buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 20px;
+        width: 100%;
+      }
+
+      .amount_button {
+        min-width: 100px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #d5d5d5;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        color: #6b7280;
+        background-color: transparent;
+        transition: all 0.3s ease;
+        width: 31%;
+      }
+
+      .amount_button.selected {
+        background-color: #e0f2fe;
+        border-color: #056bbf;
+        color: #056bbf;
+      }
+
+      .amount_button:hover {
+        border-color: #a5b4fc;
+      }
+
+      .custom_amount_input {
+        margin-top: 20px;
+        position: relative;
+      }
+
+      /* CUSTOM AMOUNT INPUT FIELD */
+      .custom_amount_input {
+        margin-top: 40px;
+      }
+      .custom_amount_input .input {
+        padding-left: 35px;
+        z-index: 0;
+      }
+
+      /* Switch Button CSS */
+      .toggle-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+        margin-top: 10px;
+      }
+
+      .toggle-container {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+      }
+
+      .toggle-input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #efefef;
+        box-shadow: 0px 6px 8px 3px #0000001a inset;
+        transition: 0.4s;
+        border-radius: 10px;
+      }
+
+      .toggle-slider:before {
+        position: absolute;
+        content: '';
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background: linear-gradient(180deg, #ffffff 0%, #e8eaea 100%);
+        transition: 0.4s;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle-input:checked + .toggle-slider {
+        background-color: #056bbf;
+      }
+
+      .toggle-input:checked + .toggle-slider:before {
+        transform: translateX(20px);
+      }
+
+      /* === CURRENCY ====*/
+      .currency-symbol,
+      .currency-label {
+        color: #969696;
+        font-weight: medium;
+        font-family: Inter, sans-serif;
+        font-size: 16px;
+        overflow-x: hidden;
+        z-index: 9999999999999999;
+      }
+
+      .currency-label {
+        right: 10px;
+        background-color: transparent;
+        padding: 0 5px;
+        z-index: 50;
+      }
+      .currency_container {
+        padding-left: 12px;
+        padding-right: 10px;
+        /* background: #dd0808; */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: -117px;
+        z-index: 99999999999;
+      }
+      .amount_buttons {
+        margin-bottom: 60px;
+      }
+
+      /* =======Ending STEP 1 FORM CSS ======= */
+
+      /* ========== Starting STEP 2 FORM CSS ======= */
+
+      .name_container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .name_input {
+        width: 48%;
+      }
+      .form-step-2 {
+        margin-top: 40px;
+      }
+      /* ========== Ending STEP 2 FORM CSS ======= */
+
+      /* ======== Starting STEP 3 FORM CSS ======= */
+      .form-step-3 {
+        margin-top: 40px;
+      }
+      .stripe-element {
+        border: 1px solid #d5d5d5;
+        border-radius: 8px;
+        padding: 12px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+      }
+
+      .stripe-element--focus {
+        outline-color: #056bbf;
+      }
+
+      .card-cvc-expiry-container {
+        display: flex;
+        gap: 20px;
+
+        justify-content: space-between;
+      }
+      .card_item_container {
+        width: 48%;
+      }
+
+      .just-validate-error-label {
+        font-size: 12px;
+        display: block;
+        font-family: inherit;
+        font-weight: 500;
+        margin-top: -2px;
+      }
+      .card_container .just-validate-error-label {
+        margin-top: 6px;
+      }
+      .error {
+        font-size: 12px;
+        display: block;
+        font-family: inherit;
+        font-weight: 500;
+        color: #b81111;
+        margin-top: 5px;
+        display: none;
+      }
+
+      /* ========= Ending STEP 3 FORM CSS ======= */
+
+      /* Message CSS */
+      .payment-message {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        margin-bottom: 26px;
+      }
+
+      .payment-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .payment-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      /* ================= Media Queries ========================= */
+
+      /* Extra Large Devices (≥ 1280px) */
+      @media screen and (min-width: 1280px) {
+      }
+
+      /* Large Devices (≥ 1024px) */
+      @media screen and (max-width: 1280px) and (min-width: 1024px) {
+      }
+
+      /* Medium Devices (≥ 768px) */
+      @media screen and (max-width: 1024px) and (min-width: 768px) {
+        .step-container {
+          max-width: 350px;
+        }
+        .step-button {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      /* Small Devices (≥ 425px) */
+      @media screen and (max-width: 768px) and (min-width: 425px) {
+        .mt-m-20 {
+          margin-top: 20px;
+        }
+
+        .step-container {
+          max-width: 250px;
+        }
+        .step-button {
+          width: 32px;
+          height: 32px;
+        }
+        .name_container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+          width: 100%;
+        }
+        .name_input {
+          width: 100%;
+        }
+
+        .card-cvc-expiry-container {
+          display: flex;
+          flex-direction: column;
+        }
+        .card_item_container {
+          width: 100%;
+        }
+      }
+
+      /* Extra Small Devices (≥ 320px) */
+      @media screen and (max-width: 425px) and (min-width: 320px) {
+        .step-container {
+          max-width: 170px;
+        }
+        .step-button {
+          width: 24px;
+          height: 24px;
+          font-size: 12px;
+        }
+        .amount_button {
+          flex: 1 1 40%;
+        }
+        .name_container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+          width: 100%;
+        }
+        .name_input {
+          width: 100%;
+        }
+
+        .card-cvc-expiry-container {
+          display: flex;
+          flex-direction: column;
+        }
+        .card_item_container {
+          width: 100%;
+        }
+      }
+
+      /* Extra Small Devices (≥ 320px) */
+      @media screen and (max-width: 320px) and (min-width: 220px) {
+        .amount_button {
+          flex: 1 1 90%;
+        }
+        .name_container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+          width: 100%;
+        }
+        .name_input {
+          width: 100%;
+        }
+
+        .card-cvc-expiry-container {
+          display: flex;
+          flex-direction: column;
+        }
+        .card_item_container {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form_container">
+      <!-- ==================== Starting Steps Indicator =============== -->
+      <div id="steps_container" class="step-container">
+        <div class="step-item">
+          <button class="step-button step-button-active">1</button>
+        </div>
+
+        <div class="step-connector step-connector-active"></div>
+        <div class="step-item">
+          <button class="step-button step-button-inactive">2</button>
+        </div>
+
+        <div class="step-connector step-connector-inactive"></div>
+
+        <div class="step-item">
+          <button class="step-button step-button-inactive">3</button>
+        </div>
+      </div>
+      <!-- ==================== Ending Steps Indicator =============== -->
+
+      <!-- ==================== Starting Payment Form =============== -->
+      <form id="payment-form" style="margin-top: 16px">
+        <div id="formContainer">
+          <!-- Form Step 1 -->
+          <div class="form-step form-step-1">
+            <div class="step_title">
+              <h4 class=" ">Select Your Donation</h4>
+            </div>
+            <div>
+              <!-- TOGGLE BUTTON -->
+              <div class="toggle_container">
+                <div id="toggleButton" class="toggle_button">
+                  <input class="payment-type-input" type="radio" name="paymentType" id="toggle1" value="onetime" />
+                  <label for="toggle1">One Time</label>
+                  <input
+                    class="payment-type-input"
+                    type="radio"
+                    name="paymentType"
+                    id="toggle2"
+                    value="monthly"
+                    checked
+                  />
+                  <label for="toggle2">
+                    Monthly
+                    <img
+                      src="https://eventizer-dev-bucket.s3.ap-south-1.amazonaws.com/hearticon-335377.webp"
+                      alt="Heart Icon"
+                      loading="lazy"
+                    />
+                  </label>
+                  <div class="toggle_background"></div>
+                </div>
+              </div>
+
+              <div id="amountButtonContainer" class="amount_buttons">
+                <!-- Dynamic amount buttons will be rendered here -->
+              </div>
+
+              <div class="currency_container">
+                <!-- CURRENCY #Change the Icon and Currency Label -->
+                <p class="currency-symbol">$</p>
+                <p class="currency-label">USD</p>
+              </div>
+              <!-- CUSTOM AMOUNT INPUT FIELD -->
+              <div class="custom_amount_input">
+                <div class="input_container">
+                  <label class="label" for="customAmount">Enter Custom Amount: </label>
+                  <input id="amount" type="text" class="input amount_input" placeholder="Enter amount" name="amount" />
+                </div>
+              </div>
+
+              <!-- #Change - render optional field by checek-->
+              <div class="mt-20">
+                <div class="toggle-wrapper">
+                  <span class="label">Add $1.5 to cover the fee (optional)</span>
+                  <label class="toggle-container">
+                    <input id="platformFee" name="includePlatformFee" type="checkbox" class="toggle-input" sty />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- NEXT BUTTON -->
+              <div>
+                <button type="button" class="next-button brand_button mt-20">
+                  Donate
+                  <!-- #Change the Icon with dynamic currency icon -->
+                  <span>$</span><span class="payment-amount-indicator">00</span
+                  ><span class="payment-type-indicator">/month</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Step 2 -->
+          <div class="form-step form-step-2" style="display: none">
+            <div class="step_title">
+              <h4 class=" ">Information</h4>
+            </div>
+            <div class="name_container">
+              <div class="input_container name_input">
+                <label class="label" for="firstName">First Name:</label>
+                <input id="firstName" class="input" type="text" name="firstName" placeholder="Enter your first name" />
+              </div>
+
+              <div class="input_container name_input mt-m-20">
+                <label class="label" for="lastName">Last Name:</label>
+                <input id="lastName" class="input" type="text" name="lastName" placeholder="Enter your last name" />
+              </div>
+            </div>
+            <div>
+              <div class="input_container mt-20">
+                <label class="label" for="lastName">Email Address:</label>
+                <input id="email" class="input" type="text" name="email" placeholder="Enter your email address" />
+              </div>
+
+              <!-- #Change Optional Feild -->
+              <div class="input_container mt-20">
+                <label class="label" for="phoneNumber">Phone no: (optional)</label>
+                <input
+                  id="phoneNumber"
+                  class="input"
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+
+              <!-- #Change Optional Feild -->
+              <div class="input_container mt-20">
+                <label class="label" for="comments">Add Comments (optional)</label>
+                <input id="comments" class="input" type="text" name="comments" placeholder="Add Comments" />
+              </div>
+            </div>
+
+            <button type="button" class="prev-button brand_button outline_button mt-20">Back</button>
+            <button type="button" class="next-button brand_button mt-10">Next</button>
+          </div>
+
+          <!-- Form Step 3 -->
+          <div class="form-step form-step-3" style="display: none">
+            <div class="step_title">
+              <h4 class=" ">Payment</h4>
+            </div>
+            <div class="card_container">
+              <div>
+                <label for="cardNumber" class="mb-8 label">Card Number</label>
+                <div id="cardNumber"></div>
+
+                <small class="error card_number_error">Card number is required</small>
+              </div>
+
+              <div class="mt-20 card-cvc-expiry-container">
+                <div class="card_item_container">
+                  <label for="cardExpiry" class="mb-8 label">MM / YY</label>
+                  <div id="cardExpiry"></div>
+                  <small class="error card_expiry_error">Expiry date is required</small>
+                </div>
+
+                <div class="card_item_container">
+                  <label for="cardCVC" class="mb-8 label">Card CVC</label>
+                  <div id="cardCVC"></div>
+                  <small class="error card_cvc_error">CVC is required</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="input_container mt-20">
+              <label class="label" for="zipCode">Billing ZIP Code</label>
+              <input
+                id="zipCode"
+                class="input zipcode_input"
+                type="text"
+                name="zipcode"
+                placeholder="Enter your billing zip code"
+              />
+            </div>
+
+            <button type="button" class="prev-button brand_button outline_button mt-20">Back</button>
+            <button type="submit" class="next-button brand_button mt-10">
+              Donate
+              <!-- #Change the Icon  with dynamic currency icon -->
+              <span>$</span><span class="payment-amount-indicator">00</span>
+              <span class="payment-type-indicator">/month</span>
+            </button>
+          </div>
+        </div>
+      </form>
+      <!-- ==================== Ending Payment Form =============== -->
+    </div>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <script>
+      (function () {
+        'use strict';
+        const steps = document.querySelectorAll('.step-button');
+        const connectors = document.querySelectorAll('.step-connector');
+        const formSteps = document.querySelectorAll('.form-step');
+        let currentStep = 0;
+
+        // In form.html
+        const urlParams = new URLSearchParams(window.location.search);
+        const campaignId = urlParams.get('campaignId');
+        console.log('🚀 ~ campaignId:', campaignId);
+
+        // #Change - Create a check that if isPaymentType is true then set peyment type monthly else make it onetime
+
+        // #Change - Create a check that if includePlatformFee feild is true then set includePlatformFee false as default value
+        let formData = { paymentType: 'monthly', includePlatformFee: false };
+
+        // Select "Next" buttons and necessary input fields for validation
+        const nextButtons = document.querySelectorAll('.next-button');
+        const amountInput = document.getElementById('amount');
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const emailInput = document.getElementById('email');
+
+        // Stripe Elements Error Containers
+        const cardNumberError = document.querySelector('.card_number_error');
+        const cardCVCError = document.querySelector('.card_cvc_error');
+        const cardExpiryError = document.querySelector('.card_expiry_error');
+
+        // Form Validation Status
+        let isCardNumberValid = true;
+        let isCVCValid = true;
+        let isExpiryValid = true;
+        let allFeildsValid = false;
+
+        // Update step visuals and visibility
+        function updateStep(step) {
+          steps.forEach((btn, idx) => {
+            btn.classList.toggle('step-button-active', idx <= step);
+            btn.classList.toggle('step-button-inactive', idx > step);
+          });
+
+          connectors.forEach((connector, idx) => {
+            connector.classList.toggle('step-connector-active', idx < step);
+            connector.classList.toggle('step-connector-inactive', idx >= step);
+          });
+
+          formSteps.forEach((formStep, idx) => {
+            formStep.style.display = idx === step ? 'block' : 'none';
+          });
+        }
+
+        // Validate Step 1: Amount Input
+        function validateStep1() {
+          const isValid = amountInput.value.trim() !== '' && !isNaN(amountInput.value);
+          disableNextButtonByStep(0, !isValid);
+        }
+
+        // Validate Step 2: First Name, Last Name, Email Inputs
+        function validateStep2() {
+          const isFirstNameValid = firstNameInput.value.trim() !== '';
+          const isLastNameValid = lastNameInput.value.trim() !== '';
+          const isEmailValid = emailInput.value.trim() !== '' && emailInput.checkValidity();
+
+          // Enable/Disable the Next button for Step 2
+          const isValid = isFirstNameValid && isLastNameValid && isEmailValid;
+          disableNextButtonByStep(1, !isValid);
+        }
+
+        // Enable or disable "Next" button for a specific step
+        function disableNextButtonByStep(step, disabled) {
+          if (nextButtons[step]) nextButtons[step].disabled = disabled;
+        }
+
+        // Add input event listeners for real-time validation on each step
+        amountInput.addEventListener('input', validateStep1);
+        firstNameInput.addEventListener('input', validateStep2);
+        lastNameInput.addEventListener('input', validateStep2);
+        emailInput.addEventListener('input', validateStep2);
+
+        // "Next" button handler to progress through steps
+        nextButtons.forEach((button, index) => {
+          button.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+              currentStep = Math.min(formSteps.length - 1, currentStep + 1);
+              updateStep(currentStep);
+
+              // Trigger validation immediately on entering step 1 or 2
+              if (currentStep === 0) validateStep1();
+              if (currentStep === 1) validateStep2();
+            }
+          });
+        });
+
+        // "Back" button handler
+        document.querySelectorAll('.prev-button').forEach((button) => {
+          button.addEventListener('click', () => {
+            currentStep = Math.max(0, currentStep - 1);
+            updateStep(currentStep);
+
+            // Trigger validation if returning to step 1 or 2
+            if (currentStep === 0) validateStep1();
+            if (currentStep === 1) validateStep2();
+          });
+        });
+
+        // Validate all inputs in the current step
+        function validateStep(step) {
+          const inputs = formSteps[step].querySelectorAll('input');
+          for (let input of inputs) {
+            if (!input.checkValidity()) {
+              input.reportValidity();
+              return false;
+            }
+          }
+          return true;
+        }
+
+        // Initial setup: update form to first step and validate
+        updateStep(currentStep);
+        validateStep1();
+        validateStep2();
+
+        // ===================== Stripe Elements Integration Code =====================//
+
+        // Stripe Elements Integration Code
+        const stripe = Stripe(
+          'pk_test_51QD0OLFoJOAbadnDrB14fJovvWquZIM4WZNIgkX5DAAIjkvREkx6DkJhBrhMUSNWQoU83iBrmNo9PcWDmm72mdUN00qyWq1BbQ'
+        );
+
+        const elements = stripe.elements();
+
+        const cardNumberElement = elements.create('cardNumber', {
+          classes: {
+            base: 'stripe-element fieldBgColor fieldTextColor',
+          },
+          style: {
+            base: {
+              // #Change color with "fieldTextColor"
+              color: '#474747',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '20px',
+              border: '1px solid #d5d5d5',
+              borderRadius: '8px',
+              padding: '12px 12px',
+              fontFamily: 'inherit',
+              fontSmoothing: 'antialiased',
+              '::placeholder': {
+                color: '#969696',
+                fontSize: '13px',
+                fontWeight: 500,
+                fontFamily: 'inherit',
+              },
+            },
+          },
+        });
+        cardNumberElement.mount('#cardNumber');
+
+        // Card Expiry Element
+        const cardExpiryElement = elements.create('cardExpiry', {
+          classes: {
+            base: 'stripe-element fieldBgColor fieldTextColor',
+          },
+          style: {
+            base: {
+              // #Change color with "fieldTextColor"
+              color: '#474747',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '20px',
+              border: '1px solid #d5d5d5',
+              borderRadius: '8px',
+              padding: '12px 12px',
+              fontFamily: 'inherit',
+              fontSmoothing: 'antialiased',
+              '::placeholder': {
+                color: '#969696',
+                fontSize: '13px',
+                fontWeight: 500,
+                fontFamily: 'inherit',
+              },
+            },
+          },
+        });
+        cardExpiryElement.mount('#cardExpiry');
+
+        // Card CVC Element
+        const cardCVCElement = elements.create('cardCvc', {
+          classes: {
+            base: 'stripe-element fieldBgColor fieldTextColor',
+          },
+          style: {
+            base: {
+              // #Change color with "fieldTextColor"
+              color: '#474747',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '20px',
+              border: '1px solid #d5d5d5',
+              borderRadius: '8px',
+              padding: '12px 12px',
+              fontFamily: 'inherit',
+              fontSmoothing: 'antialiased',
+              '::placeholder': {
+                color: '#969696',
+                fontSize: '13px',
+                fontWeight: 500,
+                fontFamily: 'inherit',
+              },
+            },
+          },
+        });
+        cardCVCElement.mount('#cardCVC');
+
+        // Apply the error handler to each Stripe Element
+        handleStripeElementsChangeError(cardNumberElement, cardNumberError);
+        handleStripeElementsChangeError(cardExpiryElement, cardExpiryError);
+        handleStripeElementsChangeError(cardCVCElement, cardCVCError);
+
+        // ================= Stripe Elements Integration Code End ================//
+
+        // HANDLE PAYMENT TYPE CHANGE
+        const paymentTypeInput = document.querySelectorAll('.payment-type-input');
+        const paymentTypeIndicator = document.querySelectorAll('.payment-type-indicator');
+
+        paymentTypeInput?.forEach((input) => {
+          input.addEventListener('change', () => {
+            formData = { ...formData, paymentType: input.value };
+            paymentTypeIndicator?.forEach((item) => {
+              if (input?.value === 'monthly') {
+                item.textContent = '/month';
+              } else if (input?.value === 'onetime') {
+                item.textContent = '';
+              }
+            });
+          });
+        });
+
+        // PUSHING CUSTOM AMOUNT OPTIONS TO DOM AND HANDLE AMOUNT SLECTION
+        const amountButtonContainer = document.getElementById('amountButtonContainer');
+        const paymentAmountIndicator = document.querySelectorAll('.payment-amount-indicator');
+
+        //#Change Amount Array options with real amounts data
+        const Amounts = [
+          { id: 1, amount: 150, currency: '$' },
+          { id: 2, amount: 50, currency: '$' },
+          { id: 3, amount: 10, currency: '$' },
+          { id: 4, amount: 10, currency: '$' },
+        ];
+
+        let selectedAmountId = null;
+
+        // Function to render the amount options dynamically
+        function renderAmountOptions() {
+          Amounts.forEach(({ id, amount, currency }) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.classList.add('amount_button');
+            button.textContent = `${currency}${amount}`;
+            button.onclick = () => handleAmountSelect(id, amount, button); // Pass id for selection
+
+            amountButtonContainer.appendChild(button);
+          });
+        }
+
+        // Handle amount button selection
+        // Handle amount button selection
+        function handleAmountSelect(id, amount, button) {
+          if (selectedAmountId === id) {
+            selectedAmountId = null;
+            amountInput.value = ''; // Clear input field
+            delete formData.amount;
+          } else {
+            selectedAmountId = id;
+            amountInput.value = amount;
+            formData = { ...formData, amount: amount };
+            handleAmountUpdate(amount);
+          }
+
+          // Trigger validation for amount input
+          validateStep1();
+
+          document.querySelectorAll('.amount_button').forEach((btn) => {
+            btn.classList.remove('selected');
+          });
+          if (selectedAmountId) {
+            button.classList.add('selected');
+          }
+        }
+
+        // Handle custom amount input change
+        amountInput.addEventListener('input', (e) => {
+          formData = { ...formData, amount: parseInt(amountInput.value) };
+          handleAmountUpdate(amountInput.value);
+          selectedAmountId = null; // Reset selected amount
+          document.querySelectorAll('.amount_button').forEach((btn) => {
+            btn.classList.remove('selected'); // Clear all button selections
+          });
+        });
+
+        // Render the amount buttons on load
+        renderAmountOptions();
+
+        function handleAmountUpdate(amount) {
+          paymentAmountIndicator?.forEach((item) => {
+            item.textContent = amount;
+          });
+        }
+
+        // Handle Input Items Changes
+        const inputFields = document.querySelectorAll('.input');
+        inputFields?.forEach((input) => {
+          input.addEventListener('input', (e) => {
+            if (e.target.name === 'amount') {
+              formData = { ...formData, amount: parseInt(e.target.value) };
+            } else {
+              formData = { ...formData, [e.target.name]: e.target.value };
+            }
+          });
+        });
+
+        // Handle Platform Fees input
+        const platformFeeswitch = document.getElementById('platformFee');
+        platformFeeswitch.addEventListener('input', (e) => {
+          if (e.target.checked) {
+            formData = { ...formData, includePlatformFee: true };
+          } else {
+            formData = { ...formData, includePlatformFee: false };
+          }
+        });
+
+        // Form Validation Code
+        const validator = new JustValidate('#payment-form');
+
+        validator
+          .addField('#firstName', [
+            {
+              rule: 'required',
+              errorMessage: 'First name is required',
+            },
+            {
+              rule: 'minLength',
+              value: 2,
+              errorMessage: 'First name must be at least 2 characters',
+            },
+            {
+              rule: 'maxLength',
+              value: 50,
+              errorMessage: 'First name must be at most 50 characters',
+            },
+          ])
+          .addField('#lastName', [
+            {
+              rule: 'required',
+              errorMessage: 'Last name is required',
+            },
+            {
+              rule: 'maxLength',
+              value: 50,
+              errorMessage: 'Last name must be at most 50 characters',
+            },
+          ])
+          .addField('#zipCode', [
+            {
+              rule: 'required',
+              errorMessage: 'Zip code is required',
+            },
+          ])
+          .addField('#amount', [
+            {
+              rule: 'required',
+              errorMessage: 'Amount is required',
+            },
+            {
+              rule: 'customRegexp',
+              value: /^[0-9]+$/,
+              errorMessage: 'Amount must be a number',
+            },
+          ])
+          .addField('#email', [
+            {
+              rule: 'required',
+              errorMessage: 'Email is required',
+            },
+            {
+              rule: 'email',
+              errorMessage: 'Email is not valid',
+            },
+          ])
+          .addField('#phoneNumber', [
+            {
+              rule: 'customRegexp',
+              value: /^[0-9]+$/,
+              errorMessage: 'Phone number must be a number',
+            },
+          ])
+          .onSuccess((event) => {
+            allFeildsValid = true;
+          });
+
+        function validateStripeElements(params) {
+          let isError = false;
+          if (cardNumberElement._empty) {
+            cardNumberError.textContent = 'Card number is required';
+            cardNumberError.style.display = 'block';
+            isError = true;
+          }
+          if (cardCVCElement._empty) {
+            cardCVCError.textContent = 'CVC code is required';
+            cardCVCError.style.display = 'block';
+            isError = true;
+          }
+          if (cardExpiryElement._empty) {
+            cardExpiryError.textContent = 'Expiry date is required';
+            cardExpiryError.style.display = 'block';
+            isError = true;
+          }
+
+          if (!isError) {
+            return true;
+          }
+          return false;
+        }
+
+        // Handle Stripe Elements Change
+        function handleStripeElementsChangeError(element, errorContainer) {
+          element.on('change', function (event) {
+            if (event.error) {
+              errorContainer.textContent = event.error.message;
+              errorContainer.style.display = 'block';
+              errorContainer.style.color = '#b81111';
+              checkCardValid(event, false);
+            } else if (event.complete) {
+              errorContainer.textContent = 'Looks good!';
+              errorContainer.style.display = 'block';
+              errorContainer.style.color = 'green';
+              checkCardValid(event, true);
+            } else {
+              errorContainer.style.display = 'none';
+              checkCardValid(event, true);
+            }
+          });
+        }
+
+        // Checked Validation
+        function checkCardValid(event, bool) {
+          if (event.elementType === 'cardNumber') {
+            isCardNumberValid = bool;
+          } else if (event.elementType === 'cardCvc') {
+            isCVCValid = bool;
+          } else if (event.elementType === 'cardExpiry') {
+            isExpiryValid = bool;
+          }
+        }
+
+        // Handle Form Submit
+        const form = document.getElementById('payment-form');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const isStripeElementsValueExist = validateStripeElements();
+
+          // If Not Valid, Return
+          if (!isStripeElementsValueExist || !isCardNumberValid || !isCVCValid || !isExpiryValid || !allFeildsValid) {
+            return;
+          }
+
+          handleStripePayment();
+        });
+
+        // Handling Api Call
+        async function handleStripePayment() {
+          try {
+            // Show loading state
+            const submitButton = document.querySelector('button[type="submit"]');
+            if (submitButton) {
+              submitButton.disabled = true;
+              submitButton.textContent = 'Processing...';
+            }
+
+            // #Change - Change the backend url here
+            const response = await fetch('http://localhost:3000/create-payment-intent', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                amount: formData.amount,
+                currency: 'usd', // or your preferred currency
+                paymentType: formData.paymentType,
+                metadata: {
+                  name: `${formData.firstName} ${formData.lastName}`,
+                  email: formData?.email,
+                  phone: formData?.phoneNumber,
+                },
+              }),
+              credentials: 'same-origin',
+            });
+
+            if (!response.ok) {
+              throw new Error(`Payment intent creation failed: ${response.statusText}`);
+            }
+            const data = await response.json();
+            const { clientSecret } = data;
+            if (!clientSecret) {
+              throw new Error('No client secret received from server');
+            }
+
+            // Confirm the card payment
+            const result = await stripe.confirmCardPayment(clientSecret, {
+              payment_method: {
+                card: cardNumberElement, // Use the Stripe Element instance
+                billing_details: {
+                  name: `${formData.firstName} ${formData.lastName}`,
+                  address: {
+                    postal_code: formData?.zipCode,
+                  },
+                  email: formData?.email,
+                  phone: formData?.phoneNumber,
+                },
+              },
+            });
+
+            if (result.error) {
+              // Handle specific error cases
+              throw new Error(result.error.message);
+            }
+
+            if (result.paymentIntent?.status === 'succeeded') {
+              showSuccessMessage('Payment processed successfully!');
+            }
+          } catch (error) {
+            console.error('Payment failed:', error.message);
+            showErrorMessage('Payment failed! Please try again.');
+          } finally {
+            const submitButton = document.querySelector('button[type="submit"]');
+            if (submitButton) {
+              submitButton.disabled = false;
+            }
+          }
+        }
+
+        // Helper functions for UI feedback
+        function showSuccessMessage(message) {
+          const messageElement = document.querySelector('.payment-message') || createMessageElement();
+          messageElement.textContent = message;
+          messageElement.className = 'payment-message payment-success';
+          const formContainer = document.getElementById('formContainer');
+          formContainer.style.display = 'none';
+          const stepsContainer = document.getElementById('steps_container');
+          stepsContainer.style.display = 'none';
+        }
+
+        function showErrorMessage(message) {
+          const messageElement = document.querySelector('.payment-message') || createMessageElement();
+          messageElement.textContent = message;
+          messageElement.className = 'payment-message payment-error';
+          const formContainer = document.getElementById('formContainer');
+          formContainer.style.display = 'none';
+          const stepsContainer = document.getElementById('steps_container');
+          stepsContainer.style.display = 'none';
+        }
+
+        function createMessageElement() {
+          const messageElement = document.createElement('div');
+          messageElement.className = 'payment-message';
+          const form = document.getElementById('payment-form');
+          form.insertBefore(messageElement, form.firstChild);
+          return messageElement;
+        }
+
+        //#Change - replace this Dummy Object with main object
+        const colors = {
+          primaryColor: '#00205b',
+          fieldBgColor: 'transparent',
+          buttonTextColor: '#ffffff',
+          formBgColor: '#ffffff',
+          fieldTextColor: '#474747',
+          borderColor: '#d5d5d5',
+        };
+
+        // Helper function to inject dynamic colors
+        function injectDynamicColors(colorsObject) {
+          const style = document.createElement('style');
+          style.innerHTML = `
+    
+          /*===============Button Css =============  */
+    
+          .brand_button{
+            background-color: ${colorsObject?.primaryColor} !important;
+            color: ${colorsObject?.buttonTextColor} !important;
+          }
+    
+          .brand_button:disabled {
+            background-color: ${generateLiteColor(colorsObject?.primaryColor, 0.5)} !important;
+          }
+    
+          .brand_button:disabled:hover {
+            background-color: ${generateLiteColor(colorsObject?.primaryColor, 0.5)} !important;
+          }
+    
+          .outline_button:hover {
+            color: ${colorsObject?.buttonTextColor} !important;
+            background-color: ${colorsObject?.primaryColor} !important;
+          }
+    
+          .brand_button.outline_button {
+            background-color: transparent !important;
+            color: ${colorsObject?.primaryColor} !important;
+            border: 2px solid ${colorsObject?.primaryColor} !important;
+          }
+    
+          .brand_button.outline_button:hover {
+            background-color: ${colorsObject?.primaryColor} !important;
+            color: ${colorsObject?.buttonTextColor} !important;            
+          }
+    
+    
+    
+          /*===============Input Css =============  */
+    
+          .input{
+            background-color: ${colorsObject?.fieldBgColor} !important;
+            color: ${colorsObject?.fieldTextColor} !important;
+            border: 1px solid ${colorsObject?.borderColor} !important;
+          }
+          .input:focus{
+            outline-color:${colorsObject?.primaryColor} !important;
+          }
+          .label{
+            color: ${colorsObject?.fieldTextColor} !important;
+          }
+    
+    
+    
+          /*===============Stripe Element Css =============  */
+    
+          .stripe-element{
+            border: 1px solid ${colorsObject?.borderColor} !important;
+          }
+    
+    
+    
+          /*===============Step Button Css =============  */
+    
+          .step-button-active {
+            background-color: ${colorsObject?.primaryColor} !important;
+            color: ${colorsObject?.buttonTextColor} !important;
+            border-color: ${colorsObject?.primaryColor} !important;
+          }
+          .step-button-inactive{
+            color: ${generateLiteColor(colorsObject?.primaryColor, 0.4)} !important;
+            border-color: ${generateLiteColor(colorsObject?.primaryColor, 0.2)} !important;
+          }
+          .step-connector-active {
+            background-color: ${colorsObject?.primaryColor} !important;
+          }
+          .step-connector-inactive {
+            background-color: ${generateLiteColor(colorsObject?.primaryColor, 0.2)} !important;
+          }
+    
+    
+          /*===============Form Background Css =============  */
+          .form_container {
+            background-color: ${colorsObject?.formBgColor} !important;
+          }
+    
+    
+          /*===============Form Background Css =============  */
+          .toggle_background {
+            background-color: ${colorsObject?.primaryColor} !important;
+          }
+    
+          .toggle_button input#toggle1:checked + label[for="toggle1"],
+          .toggle_button input#toggle2:checked + label[for="toggle2"] {
+            color: ${colorsObject?.buttonTextColor} !important;
+          }
+    
+          /*===============Amount Button Css =============  */
+          .amount_button{
+            border: 1px solid ${colorsObject?.borderColor} !important;
+          }
+          .amount_button:hover {
+            border-color: ${colorsObject?.primaryColor} !important;
+            color: ${colorsObject?.primaryColor} !important;
+          }
+          .amount_button.selected {
+            background-color: ${generateLiteColor(colorsObject?.primaryColor, 0.2)} !important;
+            border-color: ${colorsObject?.primaryColor} !important;
+            color: ${colorsObject?.primaryColor} !important;
+          }
+    
+    
+          .toggle-input:checked + .toggle-slider {
+            background-color: ${colorsObject?.primaryColor} !important;
+          }
+        `;
+          document.head.appendChild(style);
+        }
+        injectDynamicColors(colors);
+
+        function generateLiteColor(hexColor, opacity) {
+          const isHex = /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexColor);
+          if (!isHex) {
+            return hexColor; // Return original color if not valid hex
+          }
+
+          // Ensure hex color starts with "#"
+          if (hexColor.charAt(0) === '#') hexColor = hexColor.substring(1);
+
+          // Parse the hex color into RGB components
+          const r = parseInt(hexColor.substring(0, 2), 16);
+          const g = parseInt(hexColor.substring(2, 4), 16);
+          const b = parseInt(hexColor.substring(4, 6), 16);
+
+          // Create RGBA string with the provided opacity
+          return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        }
+      })();
+    </script>
+  </body>
+</html>
