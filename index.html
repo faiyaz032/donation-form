@@ -782,7 +782,7 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <script>
-      (function () {
+      (async function () {
         'use strict';
         const steps = document.querySelectorAll('.step-button');
         const connectors = document.querySelectorAll('.step-connector');
@@ -1354,56 +1354,71 @@
           return messageElement;
         }
 
+        // Fetch campaign settings
+        const response = await fetch(`https://clear-pugs-flow.loca.lt/api/custom-forms/campaign/${campaignId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch campaign settings');
+        }
+
+        const { data: campaign } = await response.json();
+        console.log('🚀 ~ campaign:', campaign);
+
         //#Change - replace this Dummy Object with main object
         const colors = {
-          primaryColor: '#00205b',
-          fieldBgColor: 'transparent',
-          buttonTextColor: '#ffffff',
-          formBgColor: '#ffffff',
-          fieldTextColor: '#474747',
-          borderColor: '#d5d5d5',
+          primaryColor: campaign.primaryColor || '#00205b',
+          fieldBgColor: campaign.fieldBgColor || 'transparent',
+          buttonTextColor: campaign.buttonTextColor || '#ffffff',
+          formBgColor: campaign.formColor || '#ffffff',
+          fieldTextColor: campaign.fieldTextColor || '#474747',
+          borderColor: campaign.primaryColor || '#d5d5d5',
         };
 
         // Helper function to inject dynamic colors
         function injectDynamicColors(colorsObject) {
           const style = document.createElement('style');
           style.innerHTML = `
-    
+
           /*===============Button Css =============  */
-    
+
           .brand_button{
             background-color: ${colorsObject?.primaryColor} !important;
             color: ${colorsObject?.buttonTextColor} !important;
           }
-    
+
           .brand_button:disabled {
             background-color: ${generateLiteColor(colorsObject?.primaryColor, 0.5)} !important;
           }
-    
+
           .brand_button:disabled:hover {
             background-color: ${generateLiteColor(colorsObject?.primaryColor, 0.5)} !important;
           }
-    
+
           .outline_button:hover {
             color: ${colorsObject?.buttonTextColor} !important;
             background-color: ${colorsObject?.primaryColor} !important;
           }
-    
+
           .brand_button.outline_button {
             background-color: transparent !important;
             color: ${colorsObject?.primaryColor} !important;
             border: 2px solid ${colorsObject?.primaryColor} !important;
           }
-    
+
           .brand_button.outline_button:hover {
             background-color: ${colorsObject?.primaryColor} !important;
-            color: ${colorsObject?.buttonTextColor} !important;            
+            color: ${colorsObject?.buttonTextColor} !important;
           }
-    
-    
-    
+
+
+
           /*===============Input Css =============  */
-    
+
           .input{
             background-color: ${colorsObject?.fieldBgColor} !important;
             color: ${colorsObject?.fieldTextColor} !important;
@@ -1415,19 +1430,19 @@
           .label{
             color: ${colorsObject?.fieldTextColor} !important;
           }
-    
-    
-    
+
+
+
           /*===============Stripe Element Css =============  */
-    
+
           .stripe-element{
             border: 1px solid ${colorsObject?.borderColor} !important;
           }
-    
-    
-    
+
+
+
           /*===============Step Button Css =============  */
-    
+
           .step-button-active {
             background-color: ${colorsObject?.primaryColor} !important;
             color: ${colorsObject?.buttonTextColor} !important;
@@ -1443,24 +1458,24 @@
           .step-connector-inactive {
             background-color: ${generateLiteColor(colorsObject?.primaryColor, 0.2)} !important;
           }
-    
-    
+
+
           /*===============Form Background Css =============  */
           .form_container {
             background-color: ${colorsObject?.formBgColor} !important;
           }
-    
-    
+
+
           /*===============Form Background Css =============  */
           .toggle_background {
             background-color: ${colorsObject?.primaryColor} !important;
           }
-    
+
           .toggle_button input#toggle1:checked + label[for="toggle1"],
           .toggle_button input#toggle2:checked + label[for="toggle2"] {
             color: ${colorsObject?.buttonTextColor} !important;
           }
-    
+
           /*===============Amount Button Css =============  */
           .amount_button{
             border: 1px solid ${colorsObject?.borderColor} !important;
@@ -1474,8 +1489,8 @@
             border-color: ${colorsObject?.primaryColor} !important;
             color: ${colorsObject?.primaryColor} !important;
           }
-    
-    
+
+
           .toggle-input:checked + .toggle-slider {
             background-color: ${colorsObject?.primaryColor} !important;
           }
